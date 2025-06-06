@@ -1,0 +1,93 @@
+
+    inserir(v)
+        novo ← No(v)
+        SE root = NULL: root ← novo; RETORNAR
+        atual ← root
+        ENQUANTO TRUE
+            anterior ← atual
+            SE v ≤ atual.item:
+                atual ← atual.esq
+                SE atual = NULL: anterior.esq ← novo; RETORNAR
+            SENAO:
+                atual ← atual.dir
+                SE atual = NULL: anterior.dir ← novo; RETORNAR
+
+    buscar(v)
+        atual ← root
+        ENQUANTO atual ≠ NULL E atual.item ≠ v
+            SE v < atual.item: atual ← atual.esq
+            SENAO: atual ← atual.dir
+        RETORNAR atual
+
+    remover(v)
+        atual, pai ← root
+        filho_esq ← TRUE
+
+        ENQUANTO atual for diferente nulo e atual.item for diferente de v
+            pai ← atual
+            Se v < atual.item: atual ← atual.esq; filho_esq ← TRUE
+            Se não: atual ← atual.dir; filho_esq ← FALSE
+        Se atual = NULL: Retorna falso
+
+        Se atual.esq = NULL E atual.dir = Nulo:
+            Se atual = root: root ← Nulo
+            Se não filho_esq: pai.esq ← Nulo
+            Se não: pai.dir ← Nulo
+
+        SENAO SE atual.dir = NULL:
+            substituir ← atual.esq
+        SENAO SE atual.esq = NULL:
+            substituir ← atual.dir
+
+        SENAO:
+            sucessor ← nosucessor(atual)
+            sucessor.esq ← atual.esq
+            substituir ← sucessor
+        SE atual = root: root ← substituir
+        SENAO SE filho_esq: pai.esq ← substituir
+        SENAO: pai.dir ← substituir
+        RETORNAR VERDADEIRO
+
+    nosucessor(no)
+        pai, suc ← no, no.dir
+        ENQUANTO suc.esq ≠ NULL: pai ← suc; suc ← suc.esq
+        SE suc ≠ no.dir: pai.esq ← suc.dir; suc.dir ← no.dir
+        RETORNAR suc
+
+    inOrder(no)
+        SE no ≠ NULL:
+            inOrder(no.esq)
+            PRINT no.item
+            inOrder(no.dir)
+
+    altura(no)
+        SE no = NULL: RETORNAR 0
+        RETORNAR 1 + MÁX(altura(no.esq), altura(no.dir))
+
+    folhas(no)
+        SE no = NULL: RETORNAR 0
+        SE no.esq = NULL E no.dir = NULL: RETORNAR 1
+        RETORNAR folhas(no.esq) + folhas(no.dir)
+
+    contarNos(no)
+        SE no = NULL: RETORNAR 0
+        RETORNAR 1 + contarNos(no.esq) + contarNos(no.dir)
+
+    minn()
+        atual ← root
+        ENQUANTO atual.esq ≠ NULL: atual ← atual.esq
+        RETORNAR atual
+
+    maxx()
+        atual ← root
+        ENQUANTO atual.dir ≠ NULL: atual ← atual.dir
+        RETORNAR atual
+
+Programa principal:
+    arv ← Tree()
+    ENQUANTO opcao ≠ 5
+        LER opcao
+        SE opcao = 1: LER x; arv.inserir(x)
+        SE opcao = 2: LER x; SE NÃO arv.remover(x): PRINT "Não encontrado"
+        SE opcao = 3: LER x; SE arv.buscar(x): PRINT "Encontrado"; SENAO: PRINT "Não encontrado"
+        SE opcao = 4: arv.inOrder(arv.root); PRINT altura, folhas, nós, min, max

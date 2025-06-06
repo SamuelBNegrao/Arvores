@@ -1,0 +1,104 @@
+  Método inserir(valor):
+    Criar novo nó com item = valor
+    Se raiz é nula:
+      raiz ← novo
+    Senão:
+      atual ← raiz
+      Enquanto verdadeiro:
+        Se valor ≤ atual.item:
+          Se atual.esq é nulo:
+            atual.esq ← novo
+            Retornar
+          atual ← atual.esq
+        Senão:
+          Se atual.dir é nulo:
+            atual.dir ← novo
+            Retornar
+          atual ← atual.dir
+
+  Método buscar(valor):
+    atual ← raiz
+    Enquanto atual ≠ nulo:
+      Se valor == atual.item:
+        Retornar atual
+      Se valor < atual.item:
+        atual ← atual.esq
+      Senão:
+        atual ← atual.dir
+    Retornar nulo
+
+  Método remover(valor):
+    atual ← raiz
+    pai ← raiz
+    filho_esq ← verdadeiro
+
+    Enquanto atual ≠ nulo e atual.item ≠ valor:
+      pai ← atual
+      Se valor < atual.item:
+        atual ← atual.esq
+        filho_esq ← verdadeiro
+      Senão:
+        atual ← atual.dir
+        filho_esq ← falso
+    Se atual for nulo: Retornar falso
+
+    Se atual não tem filhos:
+      Se atual é raiz: raiz ← nulo
+      Senão se filho_esq: pai.esq ← nulo
+      Senão: pai.dir ← nulo
+
+    Senão se atual.dir é nulo:
+      Substitui atual pelo filho esquerdo
+
+    Senão se atual.esq é nulo:
+      Substitui atual pelo filho direito
+
+    Senão:
+      sucessor ← menor nó da subárvore direita de atual
+      Se atual é raiz: raiz ← sucessor
+      Senão se filho_esq: pai.esq ← sucessor
+      Senão: pai.dir ← sucessor
+      sucessor.esq ← atual.esq
+
+    Retornar verdadeiro
+
+  Método noSucessor(no):
+    pai ← no
+    suc ← no
+    atual ← no.dir
+    Enquanto atual ≠ nulo:
+      pai ← suc
+      suc ← atual
+      atual ← atual.esq
+    Se suc ≠ no.dir:
+      pai.esq ← suc.dir
+      suc.dir ← no.dir
+    Retornar suc
+
+  Método caminhar():
+    inOrder(raiz)
+    preOrder(raiz)
+    posOrder(raiz)
+    Exibir altura(raiz), folhas(raiz), contarNos(raiz)
+    Se raiz ≠ nulo:
+      Exibir min().item, max().item
+
+  Métodos recursivos:
+    inOrder(no): se no ≠ nulo → inOrder(no.esq), imprimir no.item, inOrder(no.dir)
+    preOrder(no): se no ≠ nulo → imprimir no.item, preOrder(no.esq), preOrder(no.dir)
+    posOrder(no): se no ≠ nulo → posOrder(no.esq), posOrder(no.dir), imprimir no.item
+
+    altura(no): se no = nulo → 0, senão → 1 + max(altura(no.esq), altura(no.dir))
+    folhas(no): se no = nulo → 0, se é folha → 1, senão → folhas(no.esq) + folhas(no.dir)
+    contarNos(no): se no = nulo → 0, senão → 1 + contarNos(no.esq) + contarNos(no.dir)
+
+    min(): navegar para a esquerda até achar o menor
+    max(): navegar para a direita até achar o maior
+
+Classe Principal:
+  Criar árvore
+  Repetir:
+    Mostrar menu: 1-Inserir 2-Remover 3-Buscar 4-Exibir 5-Sair
+    Ler opção
+    Executar ação conforme opção
+  Até opção = 5
